@@ -117,3 +117,59 @@ npm run build
 ```
 
 The application can be deployed directly to [Vercel](https://vercel.com/) with native support for Next.js App Router and Better Auth middleware configurations.
+
+---
+
+## 🧩 Component Reference
+
+A breakdown of every reusable component in the `/components` directory — its rendering type, props contract, and responsibility.
+
+| Component | Type | Props | Description |
+| :--- | :---: | :--- | :--- |
+| [`Navbar.tsx`](./components/Navbar.tsx) | `"use client"` | — | Sticky top navigation bar. Reads the live auth session via `authClient.useSession()` to conditionally render login/logout controls and avatar. Animates background on scroll. |
+| [`Footer.tsx`](./components/Footer.tsx) | Server | — | Full-width site footer with newsletter subscription input, categorised navigation links, social icons, and copyright. |
+| [`HeroSection.tsx`](./components/HeroSection.tsx) | Server | — | Full-viewport landing hero with animated gradient blobs, background image overlay, headline, and CTA buttons. |
+| [`MarqueeSection.tsx`](./components/MarqueeSection.tsx) | Server | — | Infinite horizontal scrolling ticker displaying highlighted book announcements and trending titles. CSS-animation powered, no JS dependency. |
+| [`FeaturedBooks.tsx`](./components/FeaturedBooks.tsx) | Server | `featuredBooks: Book[]` | Renders a responsive 4-column grid of `<BookCard>` components from a slice of the static book catalog. |
+| [`BookCard.tsx`](./components/BookCard.tsx) | Server | `book: Book` | Individual book tile with cover image (via `next/image`), category badge, availability indicator, and a link to the detail page. Includes hover zoom and lift animation. |
+| [`TrendingCategories.tsx`](./components/TrendingCategories.tsx) | Server | — | Full-width 3-column image grid showcasing the primary book categories — Story, Tech, and Science — with overlay reveal on hover. |
+| [`TestimonialsSection.tsx`](./components/TestimonialsSection.tsx) | Server | — | Section wrapper providing heading and layout context for the testimonial carousel. |
+| [`TestimonialSlider.tsx`](./components/TestimonialSlider.tsx) | `"use client"` | — | Auto-playing Swiper carousel of reader testimonial cards. Responsive breakpoints at sm/md/lg viewports. Renders dicebear avatars via `next/image`. |
+
+---
+
+## 🔄 Component Architecture
+
+The diagram below illustrates how the application's UI layer is composed, from the root layout down to individual leaf components.
+
+```text
+app/layout.tsx  (Root Shell)
+├── <Navbar />              → auth session → login / user avatar / logout
+├── <main>                  → page-level slot (children)
+│   │
+│   ├── app/page.tsx        (Home Route)
+│   │   ├── <HeroSection />
+│   │   ├── <MarqueeSection />
+│   │   ├── <FeaturedBooks featuredBooks={Book[]} />
+│   │   │   └── <BookCard book={Book} />  ×4
+│   │   ├── <TrendingCategories />
+│   │   └── <TestimonialsSection />
+│   │       └── <TestimonialSlider />
+│   │
+│   ├── app/books/page.tsx  (Catalog Route — client)
+│   │   └── <BookCard book={Book} />  ×n  (filtered)
+│   │
+│   └── app/books/[id]/page.tsx  (Detail Route — client)
+│       └── next/image, auth guard, borrow action
+│
+└── <Footer />              → newsletter, nav links, social icons
+```
+
+**Rendering Strategy at a Glance**
+
+| Rendering Model | Components |
+| :--- | :--- |
+| **React Server Component** | `HeroSection`, `MarqueeSection`, `FeaturedBooks`, `BookCard`, `TrendingCategories`, `TestimonialsSection`, `Footer` |
+| **Client Component** (`"use client"`) | `Navbar`, `TestimonialSlider`, `app/books/page.tsx`, `app/books/[id]/page.tsx`, `app/login`, `app/register`, `app/profile` |
+
+> Server components are used by default to maximise performance and reduce the client-side JavaScript bundle. Client components are adopted only where browser APIs, React hooks, or interactive state are required.
