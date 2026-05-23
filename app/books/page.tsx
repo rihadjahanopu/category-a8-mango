@@ -3,6 +3,7 @@
 import { useState } from "react";
 import booksData from "@/data/books.json";
 import BookCard from "@/components/BookCard";
+import { Book } from "@/types";
 
 export default function AllBooks() {
   const [search, setSearch] = useState("");
@@ -10,7 +11,7 @@ export default function AllBooks() {
 
   const categories = ["All", "Story", "Tech", "Science"];
 
-  const filteredBooks = booksData.filter((book) => {
+  const filteredBooks = (booksData as Book[]).filter((book) => {
     const matchesSearch = book.title.toLowerCase().includes(search.toLowerCase());
     const matchesCategory = selectedCategory === "All" || book.category === selectedCategory;
     return matchesSearch && matchesCategory;

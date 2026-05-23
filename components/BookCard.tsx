@@ -1,7 +1,12 @@
 import Link from "next/link";
 import Image from "next/image";
+import { Book } from "@/types";
 
-export default function BookCard({ book }) {
+interface BookCardProps {
+  book: Book;
+}
+
+export default function BookCard({ book }: BookCardProps) {
   return (
     <div className="card bg-base-100 shadow-lg border border-base-200/60 overflow-hidden hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group">
       <figure className="relative w-full h-72 overflow-hidden">
@@ -20,7 +25,7 @@ export default function BookCard({ book }) {
         <h2 className="card-title text-xl font-bold line-clamp-1 group-hover:text-primary transition-colors">{book.title}</h2>
         <p className="text-sm font-medium text-gray-500 mb-2 flex items-center gap-2">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-            <path fillRule="evenodd" d="M10 9a3 30 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+            <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
           </svg>
           {book.author}
         </p>

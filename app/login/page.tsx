@@ -15,7 +15,7 @@ const loginSchema = z.object({
 	password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
-
+type LoginSchemaType = z.infer<typeof loginSchema>;
 
 export default function Login() {
 	const [loading, setLoading] = useState(false);
@@ -25,11 +25,11 @@ export default function Login() {
 		register,
 		handleSubmit,
 		formState: { errors },
-	} = useForm({
+	} = useForm<LoginSchemaType>({
 		resolver: zodResolver(loginSchema),
 	});
 
-	const onSubmit = async (data) => {
+	const onSubmit = async (data: LoginSchemaType) => {
 		setLoading(true);
 		const toastId = toast.loading("Logging in...");
 

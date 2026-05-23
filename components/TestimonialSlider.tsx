@@ -6,7 +6,12 @@ import "swiper/css";
 import "swiper/css/pagination";
 import Image from "next/image";
 
-const testimonials = [
+interface Testimonial {
+  name: string;
+  quote: string;
+}
+
+const testimonials: Testimonial[] = [
   { name: "Alice Johnson", quote: "BookLib completely changed how I find new tech books. The collection is amazing, and the interface is incredibly smooth!" },
   { name: "David Williams", quote: "The best place to discover science fiction. The recommendations are always spot on and reading feels like a breeze." },
   { name: "Sophia Martinez", quote: "I love the user-friendly design and the fast borrowing system. Highly recommended to all book lovers!" },

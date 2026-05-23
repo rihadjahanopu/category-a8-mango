@@ -5,15 +5,20 @@ import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import booksData from "@/data/books.json";
 import Image from "next/image";
+import { Book } from "@/types";
 
-export default function BookDetails({ params }) {
+interface BookDetailsProps {
+  params: Promise<{ id: string }>;
+}
+
+export default function BookDetails({ params }: BookDetailsProps) {
   const { id } = use(params);
   const { data: session, isPending } = authClient.useSession();
   const router = useRouter();
   
   const [toast, setToast] = useState("");
   
-  const book = booksData.find((b) => b.id === id);
+  const book = (booksData as Book[]).find((b) => b.id === id);
 
   useEffect(() => {
     if (!isPending && !session) {

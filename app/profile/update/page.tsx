@@ -32,7 +32,7 @@ export default function UpdateProfile() {
     );
   }
 
-  const handleUpdate = async (e) => {
+  const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     setError("");

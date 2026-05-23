@@ -17,7 +17,7 @@ const registerSchema = z.object({
 	photoUrl: z.string().url("Invalid URL").optional().or(z.literal("")),
 });
 
-
+type RegisterSchemaType = z.infer<typeof registerSchema>;
 
 export default function Register() {
 	const [loading, setLoading] = useState(false);
@@ -27,11 +27,11 @@ export default function Register() {
 		register,
 		handleSubmit,
 		formState: { errors },
-	} = useForm({
+	} = useForm<RegisterSchemaType>({
 		resolver: zodResolver(registerSchema),
 	});
 
-	const onSubmit = async (data) => {
+	const onSubmit = async (data: RegisterSchemaType) => {
 		setLoading(true);
 		const toastId = toast.loading("Creating account...");
 
